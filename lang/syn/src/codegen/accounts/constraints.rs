@@ -789,7 +789,7 @@ fn generate_constraint_init_group(
 
 
             let mint_space = if extensions.is_empty() {
-                quote! { ::anchor_spl::spl_token::Mint::LEN }
+                quote! { ::anchor_spl::token::Mint::LEN }
             } else {
                 quote! { ::anchor_spl::token_interface::find_mint_account_size(Some(&vec![#(#extensions),*]))? }
             };
