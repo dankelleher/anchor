@@ -795,7 +795,7 @@ fn generate_constraint_init_group(
             }
 
             if confidential_transfer_authority.is_some() {
-                extensions.push(quote! {::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::ConfidentialTransfer});
+                extensions.push(quote! {::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::ConfidentialTransferMint});
             }
 
 
@@ -966,7 +966,7 @@ fn generate_constraint_init_group(
                                     let cpi_ctx = anchor_lang::context::CpiContext::new(cpi_program, accounts);
                                     ::anchor_spl::token_interface::permanent_delegate_initialize(cpi_ctx, #permanent_delegate.unwrap())?;
                                 },
-                                ::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::ConfidentialTransfer => {
+                                ::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::ConfidentialTransferMint => {
                                     let cpi_program = #token_program.to_account_info();
                                     let accounts = ::anchor_spl::token_interface::ConfidentialTransferInitialize {
                                         token_program_id: #token_program.to_account_info(),
