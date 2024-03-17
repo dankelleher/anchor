@@ -973,7 +973,12 @@ fn generate_constraint_init_group(
                                         mint: #field.to_account_info(),
                                     };
                                     let cpi_ctx = anchor_lang::context::CpiContext::new(cpi_program, accounts);
-                                    ::anchor_spl::token_interface::confidential_transfer_initialize(cpi_ctx, #confidential_transfer_authority.unwrap())?;
+                                    ::anchor_spl::token_interface::confidential_transfer_initialize(
+                                        cpi_ctx,
+                                        #confidential_transfer_authority.unwrap(),
+                                        false,
+                                        None
+                                    )?;
                                 },
                                 _ => {} // do nothing
                             }
