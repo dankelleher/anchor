@@ -33,5 +33,4 @@ pub fn confidential_transfer_initialize<'info>(
 pub struct ConfidentialTransferInitialize<'info> {
     pub token_program_id: AccountInfo<'info>,
     pub mint: AccountInfo<'info>,
-    pub authority: AccountInfo<'info>,
 }
