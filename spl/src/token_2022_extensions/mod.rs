@@ -31,6 +31,7 @@ pub use token_group::*;
 pub use token_metadata::*;
 pub use transfer_fee::*;
 pub use transfer_hook::*;
+pub use confidential_transfer::*;
 
 pub use spl_pod;
 pub use spl_token_metadata_interface;
