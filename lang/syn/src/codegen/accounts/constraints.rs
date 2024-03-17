@@ -672,6 +672,7 @@ fn generate_constraint_init_group(
             permanent_delegate,
             transfer_hook_authority,
             transfer_hook_program_id,
+            confidential_transfer_authority
         } => {
             let token_program = match token_program {
                 Some(t) => t.to_token_stream(),
@@ -736,6 +737,11 @@ fn generate_constraint_init_group(
                 None => quote! {},
             };
 
+            let confidential_transfer_authority_check = match confidential_transfer_authority {
+                Some (cta) => check_scope.generate_check(cta),
+                None => quote! {},
+            };
+
             let system_program_optional_check = check_scope.generate_check(system_program);
             let token_program_optional_check = check_scope.generate_check(&token_program);
             let rent_optional_check = check_scope.generate_check(rent);
@@ -756,6 +762,7 @@ fn generate_constraint_init_group(
                 #transfer_hook_authority_check
                 #transfer_hook_program_id_check
                 #permanent_delegate_check
+                #confidential_transfer_authority_check
             };
 
             let payer_optional_check = check_scope.generate_check(payer);
@@ -785,6 +792,10 @@ fn generate_constraint_init_group(
 
             if permanent_delegate.is_some() {
                 extensions.push(quote! {::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::PermanentDelegate});
+            }
+
+            if confidential_transfer_authority.is_some() {
+                extensions.push(quote! {::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::ConfidentialTransfer});
             }
 
 
@@ -856,6 +867,11 @@ fn generate_constraint_init_group(
                 Some(thpid) => {
                     quote! { Option::<anchor_lang::prelude::Pubkey>::Some(#thpid.key()) }
                 }
+                None => quote! { Option::<anchor_lang::prelude::Pubkey>::None },
+            };
+
+            let confidential_transfer_authority = match confidential_transfer_authority {
+                Some(cta) => quote! { Option::<anchor_lang::prelude::Pubkey>::Some(#cta.key()) },
                 None => quote! { Option::<anchor_lang::prelude::Pubkey>::None },
             };
 
@@ -949,6 +965,15 @@ fn generate_constraint_init_group(
                                     };
                                     let cpi_ctx = anchor_lang::context::CpiContext::new(cpi_program, accounts);
                                     ::anchor_spl::token_interface::permanent_delegate_initialize(cpi_ctx, #permanent_delegate.unwrap())?;
+                                },
+                                ::anchor_spl::token_interface::spl_token_2022::extension::ExtensionType::ConfidentialTransfer => {
+                                    let cpi_program = #token_program.to_account_info();
+                                    let accounts = ::anchor_spl::token_interface::ConfidentialTransferInitialize {
+                                        token_program_id: #token_program.to_account_info(),
+                                        mint: #field.to_account_info(),
+                                    };
+                                    let cpi_ctx = anchor_lang::context::CpiContext::new(cpi_program, accounts);
+                                    ::anchor_spl::token_interface::confidential_transfer_initialize(cpi_ctx, #confidential_transfer_authority.unwrap())?;
                                 },
                                 _ => {} // do nothing
                             }

@@ -886,6 +886,7 @@ pub enum InitKind {
         permanent_delegate: Option<Expr>,
         transfer_hook_authority: Option<Expr>,
         transfer_hook_program_id: Option<Expr>,
+        confidential_transfer_authority: Option<Expr>,
     },
 }
 

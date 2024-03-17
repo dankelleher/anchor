@@ -1038,6 +1038,7 @@ impl<'ty> ConstraintGroupBuilder<'ty> {
                         permanent_delegate: extension_permanent_delegate.map(|pd| pd.into_inner().permanent_delegate),
                         transfer_hook_authority: extension_transfer_hook_authority.map(|tha| tha.into_inner().authority),
                         transfer_hook_program_id: extension_transfer_hook_program_id.map(|thpid| thpid.into_inner().program_id),
+                        confidential_transfer_authority: extension_confidential_transfer_authority.map(|cta| cta.into_inner().authority),
                     }
                 } else {
                     InitKind::Program {
