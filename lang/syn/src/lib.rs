@@ -696,6 +696,7 @@ pub enum ConstraintToken {
     ExtensionTokenHookAuthority(Context<ConstraintExtensionAuthority>),
     ExtensionTokenHookProgramId(Context<ConstraintExtensionTokenHookProgramId>),
     ExtensionPermanentDelegate(Context<ConstraintExtensionPermanentDelegate>),
+    ExtensionConfidentialTransferAuthority(Context<ConstraintExtensionConfidentialTransferAuthority>),
 }
 
 impl Parse for ConstraintToken {
@@ -841,6 +842,11 @@ pub struct ConstraintExtensionTokenHookProgramId {
 #[derive(Debug, Clone)]
 pub struct ConstraintExtensionPermanentDelegate {
     pub permanent_delegate: Expr,
+}
+
+#[derive(Debug, Clone)]
+pub struct ConstraintExtensionConfidentialTransferAuthority {
+    pub authority: Expr,
 }
 
 #[derive(Debug, Clone)]
@@ -998,6 +1004,7 @@ pub struct ConstraintTokenMintGroup {
     pub permanent_delegate: Option<Expr>,
     pub transfer_hook_authority: Option<Expr>,
     pub transfer_hook_program_id: Option<Expr>,
+    pub confidential_transfer_authority: Option<Expr>
 }
 
 // Syntaxt context object for preserving metadata about the inner item.
