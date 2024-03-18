@@ -871,8 +871,13 @@ fn generate_constraint_init_group(
             };
 
             let confidential_transfer_authority = match confidential_transfer_authority {
-                Some(cta) => quote! { Option::<anchor_lang::prelude::Pubkey>::Some(#cta.key()) },
-                None => quote! { Option::<anchor_lang::prelude::Pubkey>::None },
+                Some(cta) => quote! {
+                    match #cta {
+                        Some(key) => Option::<Option::<anchor_lang::prelude::Pubkey>>::Some(Some(key.key())),
+                        None => Option::<Option::<anchor_lang::prelude::Pubkey>>::Some(None::<anchor_lang::prelude::Pubkey>),
+                    }
+                },
+                None => quote! { Option::<Option::<anchor_lang::prelude::Pubkey>>::None },
             };
 
             let create_account = generate_create_account(
@@ -975,7 +980,7 @@ fn generate_constraint_init_group(
                                     let cpi_ctx = anchor_lang::context::CpiContext::new(cpi_program, accounts);
                                     ::anchor_spl::token_interface::confidential_transfer_initialize(
                                         cpi_ctx,
-                                        Some(#confidential_transfer_authority.unwrap()),
+                                        #confidential_transfer_authority.unwrap(),
                                         false,
                                         None
                                     )?;

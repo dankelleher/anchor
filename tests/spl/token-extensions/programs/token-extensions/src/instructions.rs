@@ -53,6 +53,7 @@ pub struct CreateMintAccount<'info> {
         extensions::transfer_hook::program_id = crate::ID,
         extensions::close_authority::authority = authority,
         extensions::permanent_delegate::delegate = authority,
+        extensions::confidential_transfer::authority = None::<Pubkey>
     )]
     pub mint: Box<InterfaceAccount<'info, Mint>>,
     #[account(
