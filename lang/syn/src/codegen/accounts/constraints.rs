@@ -981,7 +981,7 @@ fn generate_constraint_init_group(
                                     ::anchor_spl::token_interface::confidential_transfer_initialize(
                                         cpi_ctx,
                                         #confidential_transfer_authority.unwrap(),
-                                        false,
+                                        true,
                                         None
                                     )?;
                                 },
